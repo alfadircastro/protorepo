@@ -1,7 +1,5 @@
 package com.magneto.mutantebackend.controller;
 
-import java.util.List;
-
 import com.magneto.mutantebackend.dto.EstadisticaDto;
 import com.magneto.mutantebackend.dto.MessageResponseDto;
 import com.magneto.mutantebackend.dto.SecuenciaADNDto;
@@ -43,7 +41,7 @@ public class MutanteController {
     @PostMapping("/stats")
 	public ResponseEntity<?> consultarEstadisticas() {
 
-        EstadisticaDto estadisticaDto = mutanteService.consultarEstadisticas();
+        EstadisticaDto estadisticaDto = mutanteService.consultarEstadisticas2();
 
         if (estadisticaDto != null) {
             return ResponseEntity.ok(estadisticaDto);

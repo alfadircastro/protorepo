@@ -97,17 +97,13 @@ public class MutanteService implements Serializable {
     private void buscarSecuenciaV(String[] arrayADN) {
         int nCols = arrayADN[0].length();
 
-        for (int i = 0; i < nCols; i++) {
+        for (int i = 0; i < nCols && this.acumSecuenMutante < CANT_SECUEN_MUTANTE; i++) {
             String cadenaT = new String();
             for (String cadena : arrayADN) {
                 cadenaT = cadenaT + cadena.charAt(i); 
             }
 
             this.acumSecuenMutante += contarSecuenciaMutante(cadenaT);
-            if (this.acumSecuenMutante >= CANT_SECUEN_MUTANTE) {
-                break;
-            }
-
         }
     }
 
@@ -116,7 +112,7 @@ public class MutanteService implements Serializable {
         int nCols = arrayADN[0].length();
 
         // Extrae cadenas que se encuentren en la parte superior de la diagonal principal
-        for (int col = 0; col <= nCols - TAM_SECUEN_MUTANTE; col++) {
+        for (int col = 0; col <= (nCols - TAM_SECUEN_MUTANTE) && this.acumSecuenMutante < CANT_SECUEN_MUTANTE; col++) {
             String cadenaD = new String();
             
             int i = 0;
@@ -126,17 +122,13 @@ public class MutanteService implements Serializable {
             }
 
             this.acumSecuenMutante += contarSecuenciaMutante(cadenaD);
-            if (this.acumSecuenMutante >= CANT_SECUEN_MUTANTE) {
-                break;
-            }
-
         }
 
         if (this.acumSecuenMutante < CANT_SECUEN_MUTANTE) {
             int nFilas = arrayADN.length;
 
             // Extrae cadenas que se encuentren en la parte inferior de la diagonal principal
-            for (int fila = 1; fila <= nFilas - TAM_SECUEN_MUTANTE; fila++) {
+            for (int fila = 1; fila <= (nFilas - TAM_SECUEN_MUTANTE) && this.acumSecuenMutante < CANT_SECUEN_MUTANTE; fila++) {
                 String cadenaD = new String();
                 
                 int j = 0;
@@ -145,11 +137,7 @@ public class MutanteService implements Serializable {
                     j ++;
                 }
     
-                this.acumSecuenMutante += contarSecuenciaMutante(cadenaD);
-                if (this.acumSecuenMutante >= CANT_SECUEN_MUTANTE) {
-                    break;
-                }
-    
+                this.acumSecuenMutante += contarSecuenciaMutante(cadenaD);    
             }
         }
 
@@ -160,7 +148,7 @@ public class MutanteService implements Serializable {
         int nCols = arrayADN[0].length();
 
         // Extrae cadenas que se encuentren en la parte superior de la diagonal secundaria
-        for (int col = TAM_SECUEN_MUTANTE - 1; col < nCols; col++) {
+        for (int col = TAM_SECUEN_MUTANTE - 1; col < nCols && this.acumSecuenMutante < CANT_SECUEN_MUTANTE; col++) {
             String cadenaD = new String();
             
             int i = 0;
@@ -170,17 +158,13 @@ public class MutanteService implements Serializable {
             }
 
             this.acumSecuenMutante += contarSecuenciaMutante(cadenaD);
-            if (this.acumSecuenMutante >= CANT_SECUEN_MUTANTE) {
-                break;
-            }
-
         }
 
         if (this.acumSecuenMutante < CANT_SECUEN_MUTANTE) {
             int nFilas = arrayADN.length;
 
             // Extrae cadenas que se encuentren en la parte inferior de la diagonal secundaria
-            for (int fila = 1; fila <= nFilas - TAM_SECUEN_MUTANTE; fila++) {
+            for (int fila = 1; fila <= (nFilas - TAM_SECUEN_MUTANTE) && this.acumSecuenMutante < CANT_SECUEN_MUTANTE; fila++) {
                 String cadenaD = new String();
                 
                 int j = nCols - 1;
@@ -189,11 +173,7 @@ public class MutanteService implements Serializable {
                     j --;
                 }
     
-                this.acumSecuenMutante += contarSecuenciaMutante(cadenaD);
-                if (this.acumSecuenMutante >= CANT_SECUEN_MUTANTE) {
-                    break;
-                }
-    
+                this.acumSecuenMutante += contarSecuenciaMutante(cadenaD);    
             }
         }
 
@@ -234,6 +214,7 @@ public class MutanteService implements Serializable {
     }
 
     // Consulta las estadisticas en la bd y las recalcula si es necesario
+    /*
     public EstadisticaDto consultarEstadisticas() {
 
         Optional<Estadistica> optEstadistica = estadisticaRepository.findEstadisticaByStat_id(STAT_ID_MUTANT);
@@ -280,6 +261,16 @@ public class MutanteService implements Serializable {
         estadistica.setCount_mutant_dna(estadisticaDto.getCount_mutant_dna());
         estadistica.setCount_human_dna(estadisticaDto.getCount_human_dna());
         estadistica.setRatio(estadisticaDto.getRatio());
+    }
+    */
+
+    // Calcula las estadisticas
+    public EstadisticaDto consultarEstadisticas2() {
+
+        EstadisticaDto estadisticaDto = calcularEstadisticas();
+
+        return estadisticaDto;
+
     }
 
     private EstadisticaDto calcularEstadisticas() {

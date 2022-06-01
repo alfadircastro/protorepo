@@ -17,20 +17,6 @@ public class Estadistica {
     }
 
     /**
-     * @return String return the id
-     */
-    public String getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    /**
      * @return Long return the count_mutant_dna
      */
     public Long getCount_mutant_dna() {

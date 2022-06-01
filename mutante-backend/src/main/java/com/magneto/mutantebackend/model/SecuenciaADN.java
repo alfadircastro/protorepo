@@ -17,22 +17,5 @@ public class SecuenciaADN {
         this.mutant_dna = mutant_dna;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String[] getDna() {
-        return dna;
-    }
-
-    public Boolean getMutant_dna() {
-        return mutant_dna;
-    }
-
-
 
 }
