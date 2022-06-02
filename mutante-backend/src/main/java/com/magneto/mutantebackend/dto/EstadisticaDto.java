@@ -47,4 +47,10 @@ public class EstadisticaDto {
         this.ratio = ratio;
     }
 
+    @Override
+    public String toString() {
+        return "{\"count_mutant_dna\":" + this.count_mutant_dna + ",\"count_human_dna\":" + this.count_human_dna + 
+        ",\"ratio\":" + this.ratio + "}";
+    }
+
 }

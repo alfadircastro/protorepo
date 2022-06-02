@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 
 @SpringBootTest
 class MutanteBackendApplicationTests {
@@ -41,25 +42,29 @@ class MutanteBackendApplicationTests {
 			"AGAATGTTGG",
 			"CTCCTACCTA",
 			"TCACTAGCTT",
-			"CACGTAACTT",
-			"GCGAACACCT",
+			"CACGTAAGTT",
+			"GCGAACCCCT",
 			"AACCTGACAA",
 			"CCGTCCTTTA",
 			"GCTAACAGCT",
 			"GGTAACAGCT"
 		};
+
+		try {		
+			SecuenciaADNDto secuenciaADNDto = new SecuenciaADNDto();
+			secuenciaADNDto.setDna(arrayDNA1);
+
+			ResponseEntity<?> responseEntity = mutanteController.detectarMutante(secuenciaADNDto);
+
+			System.out.println("detectarMutante: " + responseEntity.getStatusCode().value() + " " + responseEntity.getStatusCode().getReasonPhrase());
+		} catch (ResponseStatusException ex) {
+			System.out.println("detectarMutante: " + ex.getMessage());
+		}
+
+		ResponseEntity<?> responseEntity = mutanteController.consultarEstadisticas();
+
+		System.out.println("consultarEstadisticas: " + ((EstadisticaDto)responseEntity.getBody()).toString());
 		
-		SecuenciaADNDto secuenciaADNDto = new SecuenciaADNDto();
-		secuenciaADNDto.setDna(arrayDNA1);
-
-		ResponseEntity<?> responseEntity = mutanteController.detectarMutante(secuenciaADNDto);
-
-		System.out.print("detectarMutante: " + responseEntity.toString());
-
-		responseEntity = mutanteController.consultarEstadisticas();
-
-		System.out.print("consultarEstadisticas: " + responseEntity.getBody().toString());
-
 		/*
 		boolean resp = mutanteService.isMutant(secuenciaADNDto);
 
