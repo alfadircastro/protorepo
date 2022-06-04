@@ -16,9 +16,9 @@ class MutanteBackendApplicationTests {
 
 	@Autowired
 	MutanteController mutanteController;
-
+	
 	@Test
-	void contextLoads() {
+	void testMutante() {
 
 		String[] arrayDNA = {
 			"ATGCGATTBG",
@@ -35,7 +35,22 @@ class MutanteBackendApplicationTests {
 			"GGTAACAGCT"
 		};
 
-		String[] arrayDNA1 = {
+		try {		
+			SecuenciaADNDto secuenciaADNDto = new SecuenciaADNDto();
+			secuenciaADNDto.setDna(arrayDNA);
+
+			ResponseEntity<?> responseEntity = mutanteController.detectarMutante(secuenciaADNDto);
+
+			System.out.println("testMutante: " + responseEntity.getStatusCode().value() + " " + responseEntity.getStatusCode().getReasonPhrase());
+		} catch (ResponseStatusException ex) {
+			System.out.println("testMutante: " + ex.getMessage());
+		}
+		
+	}
+
+	@Test
+	void testNoMutante() {
+		String[] arrayDNA = {
 			"ATGCGATTBG",
 			"CTGTACTCAA",
 			"TTATGGAAGG",
@@ -50,40 +65,26 @@ class MutanteBackendApplicationTests {
 			"GGTAACAGCT"
 		};
 
-		// Test mutante
-
 		try {		
 			SecuenciaADNDto secuenciaADNDto = new SecuenciaADNDto();
 			secuenciaADNDto.setDna(arrayDNA);
 
 			ResponseEntity<?> responseEntity = mutanteController.detectarMutante(secuenciaADNDto);
 
-			System.out.println("detectarMutante: " + responseEntity.getStatusCode().value() + " " + responseEntity.getStatusCode().getReasonPhrase());
+			System.out.println("testNoMutante: " + responseEntity.getStatusCode().value() + " " + responseEntity.getStatusCode().getReasonPhrase());
 		} catch (ResponseStatusException ex) {
-			System.out.println("detectarMutante: " + ex.getMessage());
+			System.out.println("testNoMutante: " + ex.getMessage());
 		}
 
-		// Test no mutante
+	}
 
-		try {		
-			SecuenciaADNDto secuenciaADNDto = new SecuenciaADNDto();
-			secuenciaADNDto.setDna(arrayDNA1);
-
-			ResponseEntity<?> responseEntity = mutanteController.detectarMutante(secuenciaADNDto);
-
-			System.out.println("detectarMutante: " + responseEntity.getStatusCode().value() + " " + responseEntity.getStatusCode().getReasonPhrase());
-		} catch (ResponseStatusException ex) {
-			System.out.println("detectarMutante: " + ex.getMessage());
-		}
-
-
-		// Test estadisticas
+	@Test
+	void testEstadisticas() {
 
 		ResponseEntity<?> responseEntity = mutanteController.consultarEstadisticas();
 
-		System.out.println("consultarEstadisticas: " + ((EstadisticaDto)responseEntity.getBody()).toString());
-		
-		
+		System.out.println("testEstadisticas: " + ((EstadisticaDto)responseEntity.getBody()).toString());
+
 	}
 
 }
